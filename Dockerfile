@@ -1,12 +1,12 @@
-FROM alpine:3.6
+alpine:3.6
 
-RUN apk update && apk add --no-cache \
+apk update && apk add --no-cache \
       bash \
       git
 
-RUN cd /tmp && git clone https://github.com/systemd/systemd
+cd /tmp && git clone https://github.com/systemd/systemd --verbose
 
-RUN echo "unicode=\"YES\"" >> /etc/rc.conf && \
+echo "unicode=\"YES\"" >> /etc/rc.conf && \
     apk add --no-cache --virtual .build_deps \
         autoconf file g++ gcc libc-dev make pkgconf python3 ninja \
         util-linux pciutils usbutils coreutils binutils findutils grep \
@@ -15,7 +15,7 @@ RUN echo "unicode=\"YES\"" >> /etc/rc.conf && \
     && \
     pip3 install meson
 
-RUN cd /tmp/systemd && \
+cd /tmp/systemd && \
     meson build && \
     ninja build
 
